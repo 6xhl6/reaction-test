@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反应时间测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 主卡片容器 */
+        .test-card {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* 标题样式 */
+        .test-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* 说明文字 */
+        .test-desc {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* 测试区域核心按钮/色块 */
+        #test-area {
+            width: 100%;
+            height: 180px;
+            background: #409eff;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            margin-bottom: 30px;
+        }
+
+        #test-area:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(64, 158, 255, 0.4);
+        }
+
+        #test-area:active {
+            transform: translateY(0);
+        }
+
+        /* 结果显示区域 */
+        .result-box {
+            padding: 20px;
+            background: #f5f7fa;
+            border-radius: 10px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        #result-time {
+            font-size: 24px;
+            color: #e63946;
+            font-weight: bold;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 500px) {
+            .test-card {
+                padding: 30px 20px;
+            }
+            .test-title {
+                font-size: 24px;
+            }
+            #test-area {
+                height: 150px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-card">
+        <h1 class="test-title">反应时间测试</h1>
+        <p class="test-desc">根据提示点击屏幕，测试你的反应速度<br>考验手速和专注力的时刻到了！</p>
+        
+        <!-- 核心测试区域 -->
+        <button id="test-area">准备就绪，点击开始</button>
+        
+        <!-- 结果展示区域 -->
+        <div class="result-box">
+            <div class="result-title">你的反应时间：</div>
+            <div id="result-time">-- 毫秒</div>
+        </div>
+    </div>
+
+    <script>
+        // ====================== JS逻辑区域（你自行填充）======================
+        // 1. 全局变量
+        let isWaiting = false;    // 是否等待点击
+        let startTime = 0;        // 开始时间
+        let timer = null;         // 延时计时器
+
+        // 2. 初始化函数
+        function initTest() {
+            // 重置页面状态
+            document.getElementById('result-time').textContent = '-- 毫秒';
+            document.getElementById('test-area').textContent = '准备就绪，点击开始';
+            isWaiting = false;
+        }
+
+        // 3. 开始测试逻辑
+        function startTest() {
+            // 随机延迟后变色/提示点击
+            document.querySelector('#test-area').innerHTML = '等待变色...'
+            document.querySelector('#test-area').style.background='#409eff'
+            let delay=Math.random()*2000+1000
+            timer=setTimeout(function(){
+                startTime=Date.now()
+                document.querySelector('#test-area').style.background='green'
+                document.querySelector('#test-area').innerHTML='停！'
+                isWaiting=true},delay)
+        }
+
+        // 4. 点击测试区域处理
+        document.getElementById('test-area').addEventListener('click', function() {
+            if (!isWaiting){
+                startTest()
+                document.querySelector('#result-time').innerHTML='-- 毫秒'
+            }
+            else {
+                const react_time=Date.now()-startTime
+                document.querySelector('#result-time').innerHTML=`${react_time}毫秒`
+                document.querySelector('#test-area').innerHTML='准备就绪，点击开始'
+                document.querySelector('#test-area').style.background='#409eff'
+                isWaiting=false
+            }
+
+        });
+
+        // 页面加载完成初始化
+        window.onload = function() {
+            initTest();
+        };
+    </script>
+</body>
+</html>
