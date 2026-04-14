@@ -158,7 +158,7 @@
         }
 
         // 4. 点击测试区域处理
-        document.getElementById('test-area').addEventListener('click', function() {
+        document.getElementById('test-area').addEventListener('mousedown', function() {
             if (!isWaiting){
                 startTest()
                 document.querySelector('#result-time').innerHTML='-- 毫秒'
